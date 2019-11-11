@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApp1
+﻿namespace Weibo_Label_App
 {
     partial class MainForm
     {
@@ -59,6 +59,8 @@
             this.radioButton_toursim_true = new System.Windows.Forms.RadioButton();
             this.button_labelit = new System.Windows.Forms.Button();
             this.button_RandomOne = new System.Windows.Forms.Button();
+            this.gMap = new GMap.NET.WindowsForms.GMapControl();
+            this.groupBoxMap.SuspendLayout();
             this.groupBoxInfo.SuspendLayout();
             this.groupBoxLabel.SuspendLayout();
             this.groupBox_weibo.SuspendLayout();
@@ -71,6 +73,7 @@
             this.groupBoxMap.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxMap.Controls.Add(this.gMap);
             this.groupBoxMap.Location = new System.Drawing.Point(12, 12);
             this.groupBoxMap.Name = "groupBoxMap";
             this.groupBoxMap.Size = new System.Drawing.Size(812, 646);
@@ -162,6 +165,7 @@
             this.textBox_User.Name = "textBox_User";
             this.textBox_User.Size = new System.Drawing.Size(167, 21);
             this.textBox_User.TabIndex = 1;
+            this.textBox_User.TextChanged += new System.EventHandler(this.textBox_User_TextChanged);
             // 
             // label1
             // 
@@ -248,6 +252,14 @@
             // comboBox_other
             // 
             this.comboBox_other.FormattingEnabled = true;
+            this.comboBox_other.Items.AddRange(new object[] {
+            "聚会",
+            "婚礼",
+            "扫墓",
+            "会议",
+            "培训",
+            "出差",
+            "考察"});
             this.comboBox_other.Location = new System.Drawing.Point(78, 112);
             this.comboBox_other.Name = "comboBox_other";
             this.comboBox_other.Size = new System.Drawing.Size(140, 20);
@@ -404,13 +416,41 @@
             // 
             this.button_RandomOne.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_RandomOne.Location = new System.Drawing.Point(30, 20);
+            this.button_RandomOne.Location = new System.Drawing.Point(31, 20);
             this.button_RandomOne.Name = "button_RandomOne";
             this.button_RandomOne.Size = new System.Drawing.Size(71, 55);
             this.button_RandomOne.TabIndex = 0;
             this.button_RandomOne.Text = "随机一个";
             this.button_RandomOne.UseVisualStyleBackColor = true;
             this.button_RandomOne.Click += new System.EventHandler(this.button_RandomOne_Click);
+            // 
+            // gMap
+            // 
+            this.gMap.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gMap.Bearing = 0F;
+            this.gMap.CanDragMap = true;
+            this.gMap.EmptyTileColor = System.Drawing.Color.Navy;
+            this.gMap.GrayScaleMode = false;
+            this.gMap.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
+            this.gMap.LevelsKeepInMemmory = 5;
+            this.gMap.Location = new System.Drawing.Point(6, 20);
+            this.gMap.MarkersEnabled = true;
+            this.gMap.MaxZoom = 2;
+            this.gMap.MinZoom = 2;
+            this.gMap.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
+            this.gMap.Name = "gMap";
+            this.gMap.NegativeMode = false;
+            this.gMap.PolygonsEnabled = true;
+            this.gMap.RetryLoadTile = 0;
+            this.gMap.RoutesEnabled = true;
+            this.gMap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
+            this.gMap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
+            this.gMap.ShowTileGridLines = false;
+            this.gMap.Size = new System.Drawing.Size(800, 620);
+            this.gMap.TabIndex = 0;
+            this.gMap.Zoom = 0D;
             // 
             // MainForm
             // 
@@ -422,7 +462,9 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBoxMap);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "MainForm";
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.groupBoxMap.ResumeLayout(false);
             this.groupBoxInfo.ResumeLayout(false);
             this.groupBoxInfo.PerformLayout();
             this.groupBoxLabel.ResumeLayout(false);
@@ -469,6 +511,7 @@
         private System.Windows.Forms.ComboBox comboBox_other;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.RichTextBox richTextBox_weibo;
+        private GMap.NET.WindowsForms.GMapControl gMap;
     }
 }
 
