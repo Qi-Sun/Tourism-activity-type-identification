@@ -16,5 +16,15 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
         }
+
+        private void button_RandomOne_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_labelit_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -40,7 +40,11 @@
             this.textBox_User = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxLabel = new System.Windows.Forms.GroupBox();
+            this.groupBox_weibo = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.richTextBox_weibo = new System.Windows.Forms.RichTextBox();
             this.groupBox_act = new System.Windows.Forms.GroupBox();
+            this.comboBox_other = new System.Windows.Forms.ComboBox();
             this.radioButton_other = new System.Windows.Forms.RadioButton();
             this.radioButton_act_entertainment = new System.Windows.Forms.RadioButton();
             this.radioButton_act_buy = new System.Windows.Forms.RadioButton();
@@ -55,15 +59,11 @@
             this.radioButton_toursim_true = new System.Windows.Forms.RadioButton();
             this.button_labelit = new System.Windows.Forms.Button();
             this.button_RandomOne = new System.Windows.Forms.Button();
-            this.comboBox_other = new System.Windows.Forms.ComboBox();
-            this.groupBox_weibo = new System.Windows.Forms.GroupBox();
-            this.richTextBox_weibo = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.groupBoxInfo.SuspendLayout();
             this.groupBoxLabel.SuspendLayout();
+            this.groupBox_weibo.SuspendLayout();
             this.groupBox_act.SuspendLayout();
             this.groupBox_Toursim.SuspendLayout();
-            this.groupBox_weibo.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxMap
@@ -188,6 +188,43 @@
             this.groupBoxLabel.TabStop = false;
             this.groupBoxLabel.Text = "Label";
             // 
+            // groupBox_weibo
+            // 
+            this.groupBox_weibo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox_weibo.Controls.Add(this.button1);
+            this.groupBox_weibo.Controls.Add(this.richTextBox_weibo);
+            this.groupBox_weibo.Location = new System.Drawing.Point(6, 292);
+            this.groupBox_weibo.Name = "groupBox_weibo";
+            this.groupBox_weibo.Size = new System.Drawing.Size(247, 187);
+            this.groupBox_weibo.TabIndex = 4;
+            this.groupBox_weibo.TabStop = false;
+            this.groupBox_weibo.Text = "Weibo";
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(6, 158);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(235, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Show Picture";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox_weibo
+            // 
+            this.richTextBox_weibo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBox_weibo.Location = new System.Drawing.Point(6, 20);
+            this.richTextBox_weibo.Name = "richTextBox_weibo";
+            this.richTextBox_weibo.Size = new System.Drawing.Size(235, 132);
+            this.richTextBox_weibo.TabIndex = 0;
+            this.richTextBox_weibo.Text = "";
+            // 
             // groupBox_act
             // 
             this.groupBox_act.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -207,6 +244,14 @@
             this.groupBox_act.TabIndex = 3;
             this.groupBox_act.TabStop = false;
             this.groupBox_act.Text = "ActivatyType";
+            // 
+            // comboBox_other
+            // 
+            this.comboBox_other.FormattingEnabled = true;
+            this.comboBox_other.Location = new System.Drawing.Point(78, 112);
+            this.comboBox_other.Name = "comboBox_other";
+            this.comboBox_other.Size = new System.Drawing.Size(140, 20);
+            this.comboBox_other.TabIndex = 8;
             // 
             // radioButton_other
             // 
@@ -353,6 +398,7 @@
             this.button_labelit.TabIndex = 1;
             this.button_labelit.Text = "标注";
             this.button_labelit.UseVisualStyleBackColor = true;
+            this.button_labelit.Click += new System.EventHandler(this.button_labelit_Click);
             // 
             // button_RandomOne
             // 
@@ -364,51 +410,7 @@
             this.button_RandomOne.TabIndex = 0;
             this.button_RandomOne.Text = "随机一个";
             this.button_RandomOne.UseVisualStyleBackColor = true;
-            // 
-            // comboBox_other
-            // 
-            this.comboBox_other.FormattingEnabled = true;
-            this.comboBox_other.Location = new System.Drawing.Point(78, 112);
-            this.comboBox_other.Name = "comboBox_other";
-            this.comboBox_other.Size = new System.Drawing.Size(140, 20);
-            this.comboBox_other.TabIndex = 8;
-            // 
-            // groupBox_weibo
-            // 
-            this.groupBox_weibo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox_weibo.Controls.Add(this.button1);
-            this.groupBox_weibo.Controls.Add(this.richTextBox_weibo);
-            this.groupBox_weibo.Location = new System.Drawing.Point(6, 292);
-            this.groupBox_weibo.Name = "groupBox_weibo";
-            this.groupBox_weibo.Size = new System.Drawing.Size(247, 187);
-            this.groupBox_weibo.TabIndex = 4;
-            this.groupBox_weibo.TabStop = false;
-            this.groupBox_weibo.Text = "Weibo";
-            // 
-            // richTextBox_weibo
-            // 
-            this.richTextBox_weibo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBox_weibo.Location = new System.Drawing.Point(6, 20);
-            this.richTextBox_weibo.Name = "richTextBox_weibo";
-            this.richTextBox_weibo.Size = new System.Drawing.Size(235, 132);
-            this.richTextBox_weibo.TabIndex = 0;
-            this.richTextBox_weibo.Text = "";
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(6, 158);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(235, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Show Picture";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button_RandomOne.Click += new System.EventHandler(this.button_RandomOne_Click);
             // 
             // MainForm
             // 
@@ -424,11 +426,11 @@
             this.groupBoxInfo.ResumeLayout(false);
             this.groupBoxInfo.PerformLayout();
             this.groupBoxLabel.ResumeLayout(false);
+            this.groupBox_weibo.ResumeLayout(false);
             this.groupBox_act.ResumeLayout(false);
             this.groupBox_act.PerformLayout();
             this.groupBox_Toursim.ResumeLayout(false);
             this.groupBox_Toursim.PerformLayout();
-            this.groupBox_weibo.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
