@@ -9,18 +9,11 @@ namespace Weibo_Label_App
 {
     public class Database
     {
-        private string DBpwd;
-
-        public Database(string cityName, string pwd)
-        {
-            DBpwd = pwd;
-        }
-
 
         public static string GetConnectionString(string Schema, string user, string pwd)
         {
             //return "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=E:\\My Course\\数据库\\Student.mdb";
-            return "Data Source=127.0.0.1;Database=" + Schema + ";User ID="+ user+ ";Password=" + pwd;
+            return "Data Source=222.29.117.240;Port=6667;Database=" + Schema + ";User ID="+ user+ ";Password=" + pwd;
             //return "Data Source=127.0.0.1;Database=huangshandata;User ID=root;Password=19950310;";
             //return "Provider=SQLOLEDB;Password=zhangyi;Persist Security Info=True;User ID=sa;Initial Catalog=com;Data Source=(local);Connect Timeout=15";
         }
