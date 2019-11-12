@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBoxMap = new System.Windows.Forms.GroupBox();
+            this.gMap = new GMap.NET.WindowsForms.GMapControl();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.groupBoxInfo = new System.Windows.Forms.GroupBox();
             this.textBox_table = new System.Windows.Forms.TextBox();
@@ -41,7 +42,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxLabel = new System.Windows.Forms.GroupBox();
             this.groupBox_weibo = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button_showpic = new System.Windows.Forms.Button();
             this.richTextBox_weibo = new System.Windows.Forms.RichTextBox();
             this.groupBox_act = new System.Windows.Forms.GroupBox();
             this.comboBox_other = new System.Windows.Forms.ComboBox();
@@ -59,7 +60,6 @@
             this.radioButton_toursim_true = new System.Windows.Forms.RadioButton();
             this.button_labelit = new System.Windows.Forms.Button();
             this.button_RandomOne = new System.Windows.Forms.Button();
-            this.gMap = new GMap.NET.WindowsForms.GMapControl();
             this.groupBoxMap.SuspendLayout();
             this.groupBoxInfo.SuspendLayout();
             this.groupBoxLabel.SuspendLayout();
@@ -80,6 +80,34 @@
             this.groupBoxMap.TabIndex = 0;
             this.groupBoxMap.TabStop = false;
             this.groupBoxMap.Text = "Map";
+            // 
+            // gMap
+            // 
+            this.gMap.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gMap.Bearing = 0F;
+            this.gMap.CanDragMap = true;
+            this.gMap.EmptyTileColor = System.Drawing.Color.Navy;
+            this.gMap.GrayScaleMode = false;
+            this.gMap.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
+            this.gMap.LevelsKeepInMemmory = 5;
+            this.gMap.Location = new System.Drawing.Point(6, 20);
+            this.gMap.MarkersEnabled = true;
+            this.gMap.MaxZoom = 2;
+            this.gMap.MinZoom = 2;
+            this.gMap.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
+            this.gMap.Name = "gMap";
+            this.gMap.NegativeMode = false;
+            this.gMap.PolygonsEnabled = true;
+            this.gMap.RetryLoadTile = 0;
+            this.gMap.RoutesEnabled = true;
+            this.gMap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
+            this.gMap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
+            this.gMap.ShowTileGridLines = false;
+            this.gMap.Size = new System.Drawing.Size(800, 620);
+            this.gMap.TabIndex = 0;
+            this.gMap.Zoom = 0D;
             // 
             // statusStrip1
             // 
@@ -197,7 +225,7 @@
             this.groupBox_weibo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox_weibo.Controls.Add(this.button1);
+            this.groupBox_weibo.Controls.Add(this.button_showpic);
             this.groupBox_weibo.Controls.Add(this.richTextBox_weibo);
             this.groupBox_weibo.Location = new System.Drawing.Point(6, 292);
             this.groupBox_weibo.Name = "groupBox_weibo";
@@ -206,17 +234,18 @@
             this.groupBox_weibo.TabStop = false;
             this.groupBox_weibo.Text = "Weibo";
             // 
-            // button1
+            // button_showpic
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.button_showpic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(6, 158);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(235, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Show Picture";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button_showpic.Enabled = false;
+            this.button_showpic.Location = new System.Drawing.Point(6, 158);
+            this.button_showpic.Name = "button_showpic";
+            this.button_showpic.Size = new System.Drawing.Size(235, 23);
+            this.button_showpic.TabIndex = 1;
+            this.button_showpic.Text = "Show Picture";
+            this.button_showpic.UseVisualStyleBackColor = true;
+            this.button_showpic.Click += new System.EventHandler(this.button_showpic_Click);
             // 
             // richTextBox_weibo
             // 
@@ -404,6 +433,7 @@
             // 
             this.button_labelit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_labelit.Enabled = false;
             this.button_labelit.Location = new System.Drawing.Point(154, 20);
             this.button_labelit.Name = "button_labelit";
             this.button_labelit.Size = new System.Drawing.Size(75, 54);
@@ -423,34 +453,6 @@
             this.button_RandomOne.Text = "随机一个";
             this.button_RandomOne.UseVisualStyleBackColor = true;
             this.button_RandomOne.Click += new System.EventHandler(this.button_RandomOne_Click);
-            // 
-            // gMap
-            // 
-            this.gMap.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gMap.Bearing = 0F;
-            this.gMap.CanDragMap = true;
-            this.gMap.EmptyTileColor = System.Drawing.Color.Navy;
-            this.gMap.GrayScaleMode = false;
-            this.gMap.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
-            this.gMap.LevelsKeepInMemmory = 5;
-            this.gMap.Location = new System.Drawing.Point(6, 20);
-            this.gMap.MarkersEnabled = true;
-            this.gMap.MaxZoom = 2;
-            this.gMap.MinZoom = 2;
-            this.gMap.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
-            this.gMap.Name = "gMap";
-            this.gMap.NegativeMode = false;
-            this.gMap.PolygonsEnabled = true;
-            this.gMap.RetryLoadTile = 0;
-            this.gMap.RoutesEnabled = true;
-            this.gMap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
-            this.gMap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
-            this.gMap.ShowTileGridLines = false;
-            this.gMap.Size = new System.Drawing.Size(800, 620);
-            this.gMap.TabIndex = 0;
-            this.gMap.Zoom = 0D;
             // 
             // MainForm
             // 
@@ -509,7 +511,7 @@
         private System.Windows.Forms.Button button_RandomOne;
         private System.Windows.Forms.GroupBox groupBox_weibo;
         private System.Windows.Forms.ComboBox comboBox_other;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_showpic;
         private System.Windows.Forms.RichTextBox richTextBox_weibo;
         private GMap.NET.WindowsForms.GMapControl gMap;
     }

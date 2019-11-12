@@ -11,7 +11,7 @@ namespace Weibo_Label_App
         public string MysqlIP = "";
         public string MysqlPort = "";
 
-        public string MysqlTableWeibo = "suzhou_weibos";
+        public string MysqlTableWeibo = "suzhou_weibos_1112";
         public string MysqlTableLabel = "suzhou_weibo_labeled";
         public string MysqlSchema = "suzhou";
 
@@ -31,12 +31,12 @@ namespace Weibo_Label_App
             return "SELECT * FROM " + MysqlSchema + "." + MysqlTableWeibo + " LIMIT " + random_index + " , 1;";
         }
 
-        public string PatternAlterLabelResult(string wid, string time, string user, string tourism, string actType, int durationTime)
+        public string SQL_Insert_LabelResult(string wid, string time, string user, string tourism, string actType, int durationTime)
         {
             return "REPLACE INTO " + MysqlSchema + "." + MysqlTableLabel + "(" +
                 FieldWeiboID + "," + FieldTimestamp + "," + FieldUser + "," + FieldTourism + "," +
                 FieldType + "," + FieldDuration +  ")" + " VALUES("  +
-                wid + "," + time + "," + user + "," + tourism + "," + actType + "," + durationTime + ");";
+                wid + "," + time + ",'" + user + "','" + tourism + "','" + actType + "'," + durationTime + ");";
         }
     }
 }
