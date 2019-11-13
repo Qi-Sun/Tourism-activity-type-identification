@@ -124,6 +124,8 @@ namespace Weibo_Label_App
             Database.Execute_NonQuery(sql_connection_str, sql_insert);
             // UI
             button_labelit.Enabled = false;
+            Initialize_Label_Tourism_State();
+            Initialize_Label_ActType_State();
         }
 
         public Dictionary<string, object> Get_Random_Weibo()
