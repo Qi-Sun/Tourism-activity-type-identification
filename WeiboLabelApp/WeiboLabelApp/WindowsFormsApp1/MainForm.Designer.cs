@@ -76,7 +76,7 @@
             this.groupBoxMap.Controls.Add(this.gMap);
             this.groupBoxMap.Location = new System.Drawing.Point(12, 12);
             this.groupBoxMap.Name = "groupBoxMap";
-            this.groupBoxMap.Size = new System.Drawing.Size(812, 646);
+            this.groupBoxMap.Size = new System.Drawing.Size(812, 730);
             this.groupBoxMap.TabIndex = 0;
             this.groupBoxMap.TabStop = false;
             this.groupBoxMap.Text = "Map";
@@ -105,13 +105,13 @@
             this.gMap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gMap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gMap.ShowTileGridLines = false;
-            this.gMap.Size = new System.Drawing.Size(800, 620);
+            this.gMap.Size = new System.Drawing.Size(800, 704);
             this.gMap.TabIndex = 0;
             this.gMap.Zoom = 0D;
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 661);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 745);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1101, 22);
             this.statusStrip1.TabIndex = 1;
@@ -142,7 +142,7 @@
             this.textBox_table.ReadOnly = true;
             this.textBox_table.Size = new System.Drawing.Size(167, 21);
             this.textBox_table.TabIndex = 7;
-            this.textBox_table.Text = "suzhou_weibo_labeled";
+            this.textBox_table.Text = "suzhou_weibo_labeled_1112";
             // 
             // label4
             // 
@@ -157,6 +157,7 @@
             // 
             this.textBox_Port.Location = new System.Drawing.Point(86, 87);
             this.textBox_Port.Name = "textBox_Port";
+            this.textBox_Port.ReadOnly = true;
             this.textBox_Port.Size = new System.Drawing.Size(167, 21);
             this.textBox_Port.TabIndex = 4;
             this.textBox_Port.Text = "6667";
@@ -174,6 +175,7 @@
             // 
             this.textBox_Server.Location = new System.Drawing.Point(86, 57);
             this.textBox_Server.Name = "textBox_Server";
+            this.textBox_Server.ReadOnly = true;
             this.textBox_Server.Size = new System.Drawing.Size(167, 21);
             this.textBox_Server.TabIndex = 3;
             this.textBox_Server.Text = "222.29.117.240";
@@ -215,7 +217,7 @@
             this.groupBoxLabel.Controls.Add(this.button_RandomOne);
             this.groupBoxLabel.Location = new System.Drawing.Point(830, 173);
             this.groupBoxLabel.Name = "groupBoxLabel";
-            this.groupBoxLabel.Size = new System.Drawing.Size(259, 485);
+            this.groupBoxLabel.Size = new System.Drawing.Size(259, 569);
             this.groupBoxLabel.TabIndex = 3;
             this.groupBoxLabel.TabStop = false;
             this.groupBoxLabel.Text = "Label";
@@ -229,7 +231,7 @@
             this.groupBox_weibo.Controls.Add(this.richTextBox_weibo);
             this.groupBox_weibo.Location = new System.Drawing.Point(6, 292);
             this.groupBox_weibo.Name = "groupBox_weibo";
-            this.groupBox_weibo.Size = new System.Drawing.Size(247, 187);
+            this.groupBox_weibo.Size = new System.Drawing.Size(247, 271);
             this.groupBox_weibo.TabIndex = 4;
             this.groupBox_weibo.TabStop = false;
             this.groupBox_weibo.Text = "Weibo";
@@ -239,7 +241,7 @@
             this.button_showpic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button_showpic.Enabled = false;
-            this.button_showpic.Location = new System.Drawing.Point(6, 158);
+            this.button_showpic.Location = new System.Drawing.Point(6, 242);
             this.button_showpic.Name = "button_showpic";
             this.button_showpic.Size = new System.Drawing.Size(235, 23);
             this.button_showpic.TabIndex = 1;
@@ -254,7 +256,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBox_weibo.Location = new System.Drawing.Point(6, 20);
             this.richTextBox_weibo.Name = "richTextBox_weibo";
-            this.richTextBox_weibo.Size = new System.Drawing.Size(235, 132);
+            this.richTextBox_weibo.Size = new System.Drawing.Size(235, 216);
             this.richTextBox_weibo.TabIndex = 0;
             this.richTextBox_weibo.Text = "";
             // 
@@ -293,6 +295,7 @@
             this.comboBox_other.Name = "comboBox_other";
             this.comboBox_other.Size = new System.Drawing.Size(140, 20);
             this.comboBox_other.TabIndex = 8;
+            this.comboBox_other.SelectedIndexChanged += new System.EventHandler(this.comboBox_other_SelectedIndexChanged);
             // 
             // radioButton_other
             // 
@@ -458,12 +461,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1101, 683);
+            this.ClientSize = new System.Drawing.Size(1101, 767);
             this.Controls.Add(this.groupBoxLabel);
             this.Controls.Add(this.groupBoxInfo);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBoxMap);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainForm";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.groupBoxMap.ResumeLayout(false);

@@ -53,11 +53,13 @@ namespace Weibo_Label_App
             button_showpic.Enabled = false;
             button_labelit.Enabled = true;
             richTextBox_weibo.Text = "";
+            GMapOverlayClear();
             Initialize_Label_ActType_State();
             Initialize_Label_Tourism_State();
             // Random One Weibo
             label_weibo = Get_Random_Weibo();
             var one_weibo = label_weibo;
+            label_wid = label_weibo["wid"].ToString();
             // Display weibo
             PointLatLng marker_latlng = new PointLatLng((double)one_weibo["latitude"], (double)one_weibo["longitude"]);
             gMap.Position = marker_latlng;
@@ -66,7 +68,7 @@ namespace Weibo_Label_App
             marker_weibo.ToolTipText = Weibo_Info_ToString(one_weibo); 
             map_overlay_weibo.Markers.Add(marker_weibo);
             gMap.Refresh();
-            MessageBox.Show(Weibo_Info_ToString(one_weibo));
+            // MessageBox.Show(Weibo_Info_ToString(one_weibo));
             // Show Picture
             if (one_weibo["pic_url"].ToString().Length > 0)
                 button_showpic.Enabled = true;
@@ -114,14 +116,20 @@ namespace Weibo_Label_App
             var delta_time = label_end_time - label_show_time;
             label_duration = (int) delta_time.TotalSeconds;
             label_time = label_end_time.ToString();
+            label_is_tourism = Get_Label_Tourism();
+            label_act_type = Get_Label_ActType();
+            // Write to Database
+            var sql_insert = gPara.SQL_Insert_LabelResult(label_wid, label_time,
+                label_user, label_is_tourism, label_act_type, label_duration);
+            Database.Execute_NonQuery(sql_connection_str, sql_insert);
+            // UI
             button_labelit.Enabled = false;
-            
         }
 
         public Dictionary<string, object> Get_Random_Weibo()
         {
             Random randomObject = new Random();
-            int random_index = randomObject.Next(0, 5399161);
+            int random_index = randomObject.Next(1, 5399161);
             var sql_select_weibo = gPara.SQL_Select_OneWeibo(random_index);
             DataTable random_table = Database.DataTable_ExecuteReader(sql_connection_str, sql_select_weibo);
             if (random_table != null && random_table.Rows.Count == 0)
@@ -184,6 +192,7 @@ namespace Weibo_Label_App
         private void textBox_User_TextChanged(object sender, EventArgs e)
         {
             gPara.LabelUser = textBox_User.Text;
+            label_user = textBox_User.Text;
         }
 
         public void Initialize_Label_Tourism_State()
@@ -236,14 +245,25 @@ namespace Weibo_Label_App
             else if (radioButton_act_transport.Checked == true)
                 return "行";
             else if (radioButton_other.Checked == true)
-                return comboBox_other.Text;
+            {
+                return comboBox_other.Text.ToString();
+            }
             else
                 return "null";
         }
 
         private void button_showpic_Click(object sender, EventArgs e)
         {
+            ShowPictureForm form_show_picture = new ShowPictureForm(label_weibo["pic_url"].ToString());
+            if(form_show_picture.ShowDialog() == DialogResult.OK)
+            {
 
+            }
+        }
+
+        private void comboBox_other_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //MessageBox.Show(comboBox_other.SelectedItem.ToString());
         }
     }
 }
