@@ -32,12 +32,6 @@
             this.gMap = new GMap.NET.WindowsForms.GMapControl();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.groupBoxInfo = new System.Windows.Forms.GroupBox();
-            this.textBox_table = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox_Port = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBox_Server = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.textBox_User = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxLabel = new System.Windows.Forms.GroupBox();
@@ -60,12 +54,16 @@
             this.radioButton_toursim_true = new System.Windows.Forms.RadioButton();
             this.button_labelit = new System.Windows.Forms.Button();
             this.button_RandomOne = new System.Windows.Forms.Button();
+            this.checkBox_only_waidi = new System.Windows.Forms.CheckBox();
+            this.checkBox_only_this = new System.Windows.Forms.CheckBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBoxMap.SuspendLayout();
             this.groupBoxInfo.SuspendLayout();
             this.groupBoxLabel.SuspendLayout();
             this.groupBox_weibo.SuspendLayout();
             this.groupBox_act.SuspendLayout();
             this.groupBox_Toursim.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxMap
@@ -73,6 +71,7 @@
             this.groupBoxMap.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxMap.Controls.Add(this.dataGridView1);
             this.groupBoxMap.Controls.Add(this.gMap);
             this.groupBoxMap.Location = new System.Drawing.Point(12, 12);
             this.groupBoxMap.Name = "groupBoxMap";
@@ -105,7 +104,7 @@
             this.gMap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gMap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gMap.ShowTileGridLines = false;
-            this.gMap.Size = new System.Drawing.Size(800, 704);
+            this.gMap.Size = new System.Drawing.Size(800, 570);
             this.gMap.TabIndex = 0;
             this.gMap.Zoom = 0D;
             // 
@@ -120,74 +119,16 @@
             // groupBoxInfo
             // 
             this.groupBoxInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBoxInfo.Controls.Add(this.textBox_table);
-            this.groupBoxInfo.Controls.Add(this.label4);
-            this.groupBoxInfo.Controls.Add(this.textBox_Port);
-            this.groupBoxInfo.Controls.Add(this.label3);
-            this.groupBoxInfo.Controls.Add(this.textBox_Server);
-            this.groupBoxInfo.Controls.Add(this.label2);
+            this.groupBoxInfo.Controls.Add(this.checkBox_only_this);
+            this.groupBoxInfo.Controls.Add(this.checkBox_only_waidi);
             this.groupBoxInfo.Controls.Add(this.textBox_User);
             this.groupBoxInfo.Controls.Add(this.label1);
             this.groupBoxInfo.Location = new System.Drawing.Point(830, 12);
             this.groupBoxInfo.Name = "groupBoxInfo";
-            this.groupBoxInfo.Size = new System.Drawing.Size(259, 155);
+            this.groupBoxInfo.Size = new System.Drawing.Size(259, 105);
             this.groupBoxInfo.TabIndex = 2;
             this.groupBoxInfo.TabStop = false;
             this.groupBoxInfo.Text = "Info";
-            // 
-            // textBox_table
-            // 
-            this.textBox_table.Location = new System.Drawing.Point(86, 118);
-            this.textBox_table.Name = "textBox_table";
-            this.textBox_table.ReadOnly = true;
-            this.textBox_table.Size = new System.Drawing.Size(167, 21);
-            this.textBox_table.TabIndex = 7;
-            this.textBox_table.Text = "suzhou_weibo_labeled_1112";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(19, 121);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 12);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Table";
-            // 
-            // textBox_Port
-            // 
-            this.textBox_Port.Location = new System.Drawing.Point(86, 87);
-            this.textBox_Port.Name = "textBox_Port";
-            this.textBox_Port.ReadOnly = true;
-            this.textBox_Port.Size = new System.Drawing.Size(167, 21);
-            this.textBox_Port.TabIndex = 4;
-            this.textBox_Port.Text = "6667";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 90);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 12);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Port";
-            // 
-            // textBox_Server
-            // 
-            this.textBox_Server.Location = new System.Drawing.Point(86, 57);
-            this.textBox_Server.Name = "textBox_Server";
-            this.textBox_Server.ReadOnly = true;
-            this.textBox_Server.Size = new System.Drawing.Size(167, 21);
-            this.textBox_Server.TabIndex = 3;
-            this.textBox_Server.Text = "222.29.117.240";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 60);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 12);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Server";
             // 
             // textBox_User
             // 
@@ -215,9 +156,9 @@
             this.groupBoxLabel.Controls.Add(this.groupBox_Toursim);
             this.groupBoxLabel.Controls.Add(this.button_labelit);
             this.groupBoxLabel.Controls.Add(this.button_RandomOne);
-            this.groupBoxLabel.Location = new System.Drawing.Point(830, 173);
+            this.groupBoxLabel.Location = new System.Drawing.Point(830, 123);
             this.groupBoxLabel.Name = "groupBoxLabel";
-            this.groupBoxLabel.Size = new System.Drawing.Size(259, 569);
+            this.groupBoxLabel.Size = new System.Drawing.Size(259, 619);
             this.groupBoxLabel.TabIndex = 3;
             this.groupBoxLabel.TabStop = false;
             this.groupBoxLabel.Text = "Label";
@@ -231,7 +172,7 @@
             this.groupBox_weibo.Controls.Add(this.richTextBox_weibo);
             this.groupBox_weibo.Location = new System.Drawing.Point(6, 292);
             this.groupBox_weibo.Name = "groupBox_weibo";
-            this.groupBox_weibo.Size = new System.Drawing.Size(247, 271);
+            this.groupBox_weibo.Size = new System.Drawing.Size(247, 321);
             this.groupBox_weibo.TabIndex = 4;
             this.groupBox_weibo.TabStop = false;
             this.groupBox_weibo.Text = "Weibo";
@@ -241,7 +182,7 @@
             this.button_showpic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button_showpic.Enabled = false;
-            this.button_showpic.Location = new System.Drawing.Point(6, 242);
+            this.button_showpic.Location = new System.Drawing.Point(6, 292);
             this.button_showpic.Name = "button_showpic";
             this.button_showpic.Size = new System.Drawing.Size(235, 23);
             this.button_showpic.TabIndex = 1;
@@ -256,7 +197,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBox_weibo.Location = new System.Drawing.Point(6, 20);
             this.richTextBox_weibo.Name = "richTextBox_weibo";
-            this.richTextBox_weibo.Size = new System.Drawing.Size(235, 216);
+            this.richTextBox_weibo.Size = new System.Drawing.Size(235, 266);
             this.richTextBox_weibo.TabIndex = 0;
             this.richTextBox_weibo.Text = "";
             // 
@@ -457,6 +398,39 @@
             this.button_RandomOne.UseVisualStyleBackColor = true;
             this.button_RandomOne.Click += new System.EventHandler(this.button_RandomOne_Click);
             // 
+            // checkBox_only_waidi
+            // 
+            this.checkBox_only_waidi.AutoSize = true;
+            this.checkBox_only_waidi.Location = new System.Drawing.Point(31, 68);
+            this.checkBox_only_waidi.Name = "checkBox_only_waidi";
+            this.checkBox_only_waidi.Size = new System.Drawing.Size(84, 16);
+            this.checkBox_only_waidi.TabIndex = 2;
+            this.checkBox_only_waidi.Text = "只看外地人";
+            this.checkBox_only_waidi.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_only_this
+            // 
+            this.checkBox_only_this.AutoSize = true;
+            this.checkBox_only_this.Checked = true;
+            this.checkBox_only_this.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_only_this.Location = new System.Drawing.Point(142, 68);
+            this.checkBox_only_this.Name = "checkBox_only_this";
+            this.checkBox_only_this.Size = new System.Drawing.Size(96, 16);
+            this.checkBox_only_this.TabIndex = 3;
+            this.checkBox_only_this.Text = "只看当前微博";
+            this.checkBox_only_this.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(6, 596);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 23;
+            this.dataGridView1.Size = new System.Drawing.Size(800, 128);
+            this.dataGridView1.TabIndex = 1;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -479,6 +453,7 @@
             this.groupBox_act.PerformLayout();
             this.groupBox_Toursim.ResumeLayout(false);
             this.groupBox_Toursim.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -490,12 +465,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.GroupBox groupBoxInfo;
         private System.Windows.Forms.GroupBox groupBoxLabel;
-        private System.Windows.Forms.TextBox textBox_table;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox_Port;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox_Server;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox_User;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox_act;
@@ -518,6 +487,9 @@
         private System.Windows.Forms.Button button_showpic;
         private System.Windows.Forms.RichTextBox richTextBox_weibo;
         private GMap.NET.WindowsForms.GMapControl gMap;
+        private System.Windows.Forms.CheckBox checkBox_only_this;
+        private System.Windows.Forms.CheckBox checkBox_only_waidi;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 

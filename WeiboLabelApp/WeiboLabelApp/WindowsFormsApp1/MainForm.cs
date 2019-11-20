@@ -59,10 +59,13 @@ namespace Weibo_Label_App
             // Random One Weibo
             label_weibo = Get_Random_Weibo();
             var one_weibo = label_weibo;
+            if (one_weibo == null)
+                return;
             label_wid = label_weibo["wid"].ToString();
             // Display weibo
             PointLatLng marker_latlng = new PointLatLng((double)one_weibo["latitude"], (double)one_weibo["longitude"]);
             gMap.Position = marker_latlng;
+            gMap.Zoom = 13;
             GMapMarker marker_weibo = new GMarkerGoogle(marker_latlng, GMarkerGoogleType.blue);
             marker_weibo.ToolTipMode = MarkerTooltipMode.OnMouseOver;
             marker_weibo.ToolTipText = Weibo_Info_ToString(one_weibo); 
@@ -115,7 +118,7 @@ namespace Weibo_Label_App
             label_end_time = DateTime.Now;
             var delta_time = label_end_time - label_show_time;
             label_duration = (int) delta_time.TotalSeconds;
-            label_time = label_end_time.ToString();
+            label_time = label_end_time.ToString("yyyy/MM/dd HH:hh:ss");
             label_is_tourism = Get_Label_Tourism();
             label_act_type = Get_Label_ActType();
             // Write to Database
@@ -131,10 +134,19 @@ namespace Weibo_Label_App
         public Dictionary<string, object> Get_Random_Weibo()
         {
             Random randomObject = new Random();
-            int random_index = randomObject.Next(1, 5399161);
-            var sql_select_weibo = gPara.SQL_Select_OneWeibo(random_index);
+            string sql_select_weibo = "";
+            if (checkBox_only_waidi.Checked == false)
+            {
+                int random_index = randomObject.Next(1, 5399161);
+                sql_select_weibo = gPara.SQL_Select_OneWeibo(random_index);
+            }
+            else
+            {
+                int random_index = randomObject.Next(1, 1067162);
+                sql_select_weibo = gPara.SQL_Select_nolocal_OneWeibo(random_index);
+            }
             DataTable random_table = Database.DataTable_ExecuteReader(sql_connection_str, sql_select_weibo);
-            if (random_table != null && random_table.Rows.Count == 0)
+            if (random_table == null || random_table.Rows.Count == 0)
             {
                 MessageBox.Show("No data");
                 return null;
@@ -163,7 +175,7 @@ namespace Weibo_Label_App
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            
+            //MessageBox.Show(DateTime.Now.ToString("yyyy/MM/dd HH:hh:ss"));
             // Load Map
             gMap.MapProvider = GMapProviders.GoogleChinaMap;
             gMap.Manager.Mode = AccessMode.ServerAndCache;//地图加载模式
@@ -174,9 +186,9 @@ namespace Weibo_Label_App
             gMap.Zoom = 13;
             gMap.Overlays.Add(this.map_overlay_weibo);
             // Read User Info
-            gPara.MysqlIP = textBox_Server.Text;
-            gPara.MysqlPort = textBox_Port.Text;
-            gPara.MysqlTableLabel = textBox_table.Text;
+            gPara.MysqlIP = "222.29.117.240";
+            gPara.MysqlPort = "6667";
+            gPara.MysqlTableLabel = "suzhou_weibo_labeled_1112";
             //Mysql
             sql_connection_str = Database.GetConnectionString("suzhou", "geosoft", "3702");
             // UI

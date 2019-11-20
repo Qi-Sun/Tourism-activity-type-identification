@@ -4,17 +4,28 @@
 import pymysql
 import codecs
 from urllib import request
+import urllib
 from typing import List, Dict
 import json
 from tqdm import tqdm
 
 
-def get_url_response(origin: List[float], destination: List[float], strategy: int = 0) -> Dict:
+def get_url_response_direction(origin: List[float], destination: List[float], strategy: int = 0) -> Dict:
     pattern_url = "http://restapi.amap.com/v3/direction/driving?key=fab711f9cdbe5ee716ac10ecd241e80a" + \
                   "&origin={origin_lng},{origin_lat}&destination={des_lng},{des_lat}&extensions=all&strategy={strategy}"
     request_url = pattern_url.format(origin_lng=origin[0], origin_lat=origin[1], des_lng=destination[0],
                                      des_lat=destination[1], strategy=strategy)
     response = request.urlopen(request_url)
+    return json.loads(response.read().decode('utf-8'))
+
+
+def get_url_response_geocode(city_name: str) -> Dict:
+    pattern_url = "http://restapi.amap.com/v3/geocode/geo?"
+    values = {}
+    values["key"] = "fab711f9cdbe5ee716ac10ecd241e80a"
+    values["address"] = "市人民政府"
+    values["city"] = city_name
+    response = request.urlopen(pattern_url + urllib.parse.urlencode(values))
     return json.loads(response.read().decode('utf-8'))
 
 
@@ -29,8 +40,23 @@ def get_city_location() -> Dict:
     return city_location
 
 
+def get_city_location_by_api() -> Dict:
+    db_conn = pymysql.connect(host='222.29.117.240', port=2048, user='root', passwd='19950310', charset='utf8')
+    db_cursor = db_conn.cursor(cursor=pymysql.cursors.DictCursor)
+    db_cursor.execute("SELECT NAME, ST_X(the_Centroid) as lng, ST_Y(the_Centroid) as lat FROM suzhou.cityshp;")
+    city_location = {}
+    for record in db_cursor.fetchall():
+        city_name = str(record['NAME'])
+        response = get_url_response_geocode(city_name)
+        if "info" in response and response["info"] == "OK" and len(response["geocodes"]):
+            lat, lng = response["geocodes"][0]["location"].split(',')
+            city_location[city_name] = [float(lat), float(lng)]
+    db_cursor.close()
+    return city_location
+
+
 def get_highway_distance_duration(city1_location: List[float], city2_location: List[float], strategy: int = 0) -> Dict:
-    response = get_url_response(city1_location, city2_location, strategy)
+    response = get_url_response_direction(city1_location, city2_location, strategy)
     # print(response)
     res = {'distance': None, 'duration': None}
     if 'info' not in response or response['info'] != 'OK':
@@ -55,7 +81,7 @@ def update_database_data(city1_name: str, city2_name: str, data: Dict):
 
 
 if __name__ == '__main__':
-    city_locations = get_city_location()
+    city_locations = get_city_location_by_api()
     target_city = '苏州市'
     other_cities = set(city_locations.keys()) - set([target_city])
     res_info = []
@@ -67,10 +93,10 @@ if __name__ == '__main__':
                                                               strategy)
             cur_city_info.append(distance_duration['distance'])
             cur_city_info.append(distance_duration['duration'])
-            # update_database_data(target_city, other_city, distance_duration)
+            update_database_data(target_city, other_city, distance_duration)
         res_info.append(cur_city_info)
-    with codecs.open('./amap_driving_distance_duration.csv', 'w', encoding='utf8') as wf:
+    with codecs.open('./amap_driving_distance_duration_1119.txt', 'w', encoding='utf8') as wf:
         wf.write('cityname,distance_0,duration_0,distance_2,duration_2\n')
         for line in res_info:
-            wf.write(','.join(line)+'\n')
+            wf.write(','.join(line) + '\n')
     print('Done')
