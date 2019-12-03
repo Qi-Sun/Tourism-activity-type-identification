@@ -29,6 +29,7 @@ namespace Weibo_Label_App
         // Label
         public string label_is_tourism = "";
         public string label_act_type = "";
+        public string label_purpose = "";
         public string label_wid = "";
         public string label_user = "";
         public string label_time = "";
@@ -39,6 +40,171 @@ namespace Weibo_Label_App
 
         //Gmap 
         public GMapOverlay map_overlay_weibo = new GMapOverlay("WeiboMarker");
+
+        //Classification system 
+        public Dictionary<string, Dictionary<string, List<string>>> classification_act = new Dictionary<string, Dictionary<string, List<string>>>();
+        public Dictionary<string, List<string>> classification_purpose = new Dictionary<string, List<string>>();
+
+        public void Initialize_Classification_Act()
+        {
+            classification_act = new Dictionary<string, Dictionary<string, List<string>>>();
+            classification_act.Add("游玩", new Dictionary<string, List<string>>());
+            classification_act.Add("餐饮", new Dictionary<string, List<string>>());
+            classification_act.Add("住宿", new Dictionary<string, List<string>>());
+            classification_act.Add("出行", new Dictionary<string, List<string>>());
+            classification_act.Add("购物", new Dictionary<string, List<string>>());
+            classification_act.Add("娱乐", new Dictionary<string, List<string>>());
+            classification_act.Add("事务", new Dictionary<string, List<string>>());
+            classification_act.Add("其他", new Dictionary<string, List<string>>());
+            // 游玩
+            classification_act["游玩"].Add("定位", new List<string>() { "TBD" });
+            classification_act["游玩"].Add("赏景", new List<string>() { "TBD" });
+            classification_act["游玩"].Add("感慨", new List<string>() { "TBD" });
+            classification_act["游玩"].Add("休闲", new List<string>() { "TBD" });
+            classification_act["游玩"].Add("夜游", new List<string>() { "TBD" });
+            classification_act["游玩"].Add("戏曲", new List<string>() { "TBD" });
+            classification_act["游玩"].Add("追星", new List<string>() { "TBD" });
+            // 餐饮
+            classification_act["餐饮"].Add("基础", new List<string>() { "快餐", "TBD" });
+            classification_act["餐饮"].Add("观光", new List<string>() { "景区", "TBD" });
+            classification_act["餐饮"].Add("休闲", new List<string>() { "TBD" });
+            classification_act["餐饮"].Add("特色", new List<string>() { "TBD" });
+            // 住宿
+            classification_act["住宿"].Add("青旅", new List<string>() { "TBD" });
+            classification_act["住宿"].Add("宾馆", new List<string>() { "TBD" });
+            classification_act["住宿"].Add("酒店", new List<string>() { "TBD" });
+            // 出行
+            classification_act["出行"].Add("城市间", new List<string>() { "离开" ,"抵达" ,"途中" ,"TBD" });
+            classification_act["出行"].Add("市内", new List<string>() { "公共交通", "出租车", "TBD" });
+            classification_act["出行"].Add("景区内", new List<string>() { "TBD" });
+            // 购物
+            classification_act["购物"].Add("日常", new List<string>() { "TBD" });
+            classification_act["购物"].Add("特产", new List<string>() { "TBD" });
+            classification_act["购物"].Add("定位", new List<string>() { "TBD" });
+            // 娱乐
+            classification_act["娱乐"].Add("唱歌", new List<string>() { "TBD" });
+            classification_act["娱乐"].Add("电影", new List<string>() { "TBD" });
+            classification_act["娱乐"].Add("温泉", new List<string>() { "TBD" });
+            classification_act["娱乐"].Add("游乐园", new List<string>() { "TBD" });
+            // 事务
+            classification_act["事务"].Add("婚礼", new List<string>() { "TBD" });
+            classification_act["事务"].Add("会议", new List<string>() { "TBD" });
+            classification_act["事务"].Add("扫墓", new List<string>() { "TBD" });
+            classification_act["事务"].Add("聚会", new List<string>() { "TBD" });
+            classification_act["事务"].Add("其他", new List<string>() { "TBD" });
+            // 其他
+            classification_act["其他"].Add("生活琐事", new List<string>() { "TBD" });
+            classification_act["其他"].Add("人生感慨", new List<string>() { "TBD" });
+            classification_act["其他"].Add("笑话段子", new List<string>() { "TBD" });
+            classification_act["其他"].Add("心灵鸡汤", new List<string>() { "TBD" });
+            classification_act["其他"].Add("广告", new List<string>() { "TBD" });
+            classification_act["其他"].Add("其他", new List<string>() { "TBD" });
+        }
+
+        public bool Update_Classification_Act()
+        {
+            string type1 = comboBox_type_1.Text;
+            string type2 = comboBox_type_2.Text;
+            string type3 = comboBox_type_3.Text;
+            if (!classification_act.ContainsKey(type1))
+                classification_act.Add(type1, new Dictionary<string, List<string>>());
+            if (!classification_act[type1].ContainsKey(type2))
+                classification_act[type1].Add(type2, new List<string>() { "TBD" });
+            if (!classification_act[type1][type2].Contains(type3))
+            {
+                classification_act[type1][type2].Add(type3);
+                return true;
+            }
+            return false;
+        }
+
+        public void Initialize_Classification_Purpose()
+        {
+            classification_purpose = new Dictionary<string, List<string>>();
+            classification_purpose.Add("商务旅游", new List<string>() { "出差", "会议" });
+            classification_purpose.Add("养生旅游", new List<string>() { "健身", "养老" });
+            classification_purpose.Add("研学旅游", new List<string>() { "考试", "培训" });
+            classification_purpose.Add("休闲旅游", new List<string>() { "观光", "度假" });
+            classification_purpose.Add("情感旅游", new List<string>() { "婚庆", "探亲访友" });
+            classification_purpose.Add("探奇", new List<string>() { "探险", "新奇体验" });
+        }
+
+        public bool Update_Classification_Purpose()
+        {
+            string type1 = comboBox_purpose_1.Text;
+            string type2 = comboBox_purpose_2.Text;
+            if (!classification_purpose.ContainsKey(type1))
+                classification_purpose.Add(type1, new List<string>() { "TBD" });
+            if (!classification_purpose[type1].Contains(type2)) 
+            { 
+                classification_purpose[type1].Add(type2);
+                return true;
+            }
+            return false;
+        }
+
+        public void Refresh_ComboBox_Act_1()
+        {
+            comboBox_type_1.Items.Clear();
+            foreach (var item in classification_act)
+            {
+                comboBox_type_1.Items.Add(item.Key);
+            }
+            comboBox_type_1.Text = "";
+            comboBox_type_2.Text = "";
+            comboBox_type_3.Text = "";
+        }
+
+        public void Refresh_Combox_Act_2()
+        {
+            if (comboBox_type_1.Text != "" && classification_act.ContainsKey(comboBox_type_1.Text))
+            {
+                comboBox_type_2.Items.Clear();
+                foreach (var item in classification_act[comboBox_type_1.Text])
+                {
+                    comboBox_type_2.Items.Add(item.Key);
+                }
+                comboBox_type_2.Text = "";
+            }
+        }
+
+        public void Refresh_ComboBox_Purpose_1()
+        {
+            comboBox_purpose_1.Items.Clear();
+            foreach (var item in classification_purpose)
+            {
+                comboBox_purpose_1.Items.Add(item.Key);
+            }
+            comboBox_purpose_1.Text = "";
+            comboBox_purpose_2.Text = "";
+        }
+
+        public void Refresh_ComboBox_Purpose_2()
+        {
+            if (comboBox_purpose_1.Text != "" && classification_purpose.ContainsKey(comboBox_purpose_1.Text))
+            {
+                comboBox_purpose_2.Items.Clear();
+                foreach (var item in classification_purpose[comboBox_purpose_1.Text])
+                {
+                    comboBox_purpose_2.Items.Add(item);
+                }
+            }
+            comboBox_purpose_2.Text = "";
+        }
+
+        public void Refresh_Combox_Act_3()
+        {
+            if (comboBox_type_2.Text != "" && classification_act[comboBox_type_1.Text].ContainsKey(comboBox_type_2.Text))
+            {
+                comboBox_type_3.Items.Clear();
+                foreach (var item in classification_act[comboBox_type_1.Text][comboBox_type_2.Text])
+                {
+                    comboBox_type_3.Items.Add(item);
+                }
+                
+            }
+            comboBox_type_3.Text = "";
+        }
 
         private void button_RandomOne_Click(object sender, EventArgs e)
         {
@@ -77,6 +243,9 @@ namespace Weibo_Label_App
                 button_showpic.Enabled = true;
             // Show Text in RichTextBox
             richTextBox_weibo.AppendText(Weibo_Info_ToString_Brief(one_weibo));
+            // ComboBox
+            Refresh_ComboBox_Act_1();
+            Refresh_ComboBox_Purpose_1();
             return;
         }
 
@@ -121,14 +290,22 @@ namespace Weibo_Label_App
             label_time = label_end_time.ToString("yyyy/MM/dd HH:hh:ss");
             label_is_tourism = Get_Label_Tourism();
             label_act_type = Get_Label_ActType();
+            label_purpose = Get_Label_Purpose();
+
             // Write to Database
-            var sql_insert = gPara.SQL_Insert_LabelResult(label_wid, label_time,
-                label_user, label_is_tourism, label_act_type, label_duration);
+            var sql_insert = gPara.SQL_Insert_LabelResult_1203(label_wid, label_time,
+                label_user, label_is_tourism, label_act_type, label_purpose,
+                comboBox_type_1.Text, comboBox_type_2.Text, comboBox_type_3.Text,
+                comboBox_purpose_1.Text, comboBox_purpose_2.Text,
+                label_duration);
             Database.Execute_NonQuery(sql_connection_str, sql_insert);
             // UI
             button_labelit.Enabled = false;
             Initialize_Label_Tourism_State();
             Initialize_Label_ActType_State();
+            // ComboBox 
+            Update_Classification_Act();
+            Update_Classification_Purpose();
         }
 
         public Dictionary<string, object> Get_Random_Weibo()
@@ -193,6 +370,9 @@ namespace Weibo_Label_App
             sql_connection_str = Database.GetConnectionString("suzhou", "geosoft", "3702");
             // UI
             richTextBox_weibo.Font = new Font("Times New Roman", 12);
+            // Build classification
+            Initialize_Classification_Act();
+            Initialize_Classification_Purpose();
         }
 
         public void GMapOverlayClear()
@@ -218,6 +398,7 @@ namespace Weibo_Label_App
 
         public void Initialize_Label_ActType_State()
         {
+            /*
             radioButton_act_buy.Checked = false;
             radioButton_act_eat.Checked = false;
             radioButton_act_entertainment.Checked = false;
@@ -227,7 +408,7 @@ namespace Weibo_Label_App
             radioButton_act_transport.Checked = false;
             radioButton_other.Checked = false;
             comboBox_other.Text = "";
-            comboBox_other.SelectedItem = null;
+            comboBox_other.SelectedItem = null;*/
         }
 
         public string Get_Label_Tourism()
@@ -244,26 +425,12 @@ namespace Weibo_Label_App
 
         public string Get_Label_ActType()
         {
-            if (radioButton_act_buy.Checked == true)
-                return "购";
-            else if (radioButton_act_eat.Checked == true)
-                return "吃";
-            else if (radioButton_act_entertainment.Checked == true)
-                return "娱";
-            else if (radioButton_act_live.Checked == true)
-                return "住";
-            else if (radioButton_act_notsure.Checked == true)
-                return "不确定";
-            else if (radioButton_act_sightseeing.Checked == true)
-                return "游";
-            else if (radioButton_act_transport.Checked == true)
-                return "行";
-            else if (radioButton_other.Checked == true)
-            {
-                return comboBox_other.Text.ToString();
-            }
-            else
-                return "null";
+            return textbox_type.Text;
+        }
+
+        public string Get_Label_Purpose()
+        {
+            return textBox_purpose.Text;
         }
 
         private void button_showpic_Click(object sender, EventArgs e)
@@ -278,6 +445,79 @@ namespace Weibo_Label_App
         private void comboBox_other_SelectedIndexChanged(object sender, EventArgs e)
         {
             //MessageBox.Show(comboBox_other.SelectedItem.ToString());
+        }
+
+        private void comboBox_type_1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            update_act_type_text();
+            Refresh_Combox_Act_2();
+        }
+
+        private void comboBox_type_2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            update_act_type_text();
+            Refresh_Combox_Act_3();
+        }
+
+        private void comboBox_type_3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            update_act_type_text();
+        }
+
+        public void update_act_type_text()
+        {
+            string type1 = comboBox_type_1.Text;
+            string type2 = comboBox_type_2.Text;
+            string type3 = comboBox_type_3.Text;
+            type1 = type1 != "" ? type1 : "Null";
+            type2 = type2 != "" ? type2 : "Null";
+            type3 = type3 != "" ? type3 : "Null";
+            textbox_type.Text = string.Format("{0}-{1}-{2}", type1, type2, type3);
+        }
+
+        private void comboBox_purpose_1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            update_purpose_text();
+            Refresh_ComboBox_Purpose_2();
+        }
+
+        private void comboBox_purpose_2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            update_purpose_text();
+        }
+
+        public void update_purpose_text()
+        {
+            string type1 = comboBox_purpose_1.Text;
+            string type2 = comboBox_purpose_2.Text;
+            type1 = type1 != "" ? type1 : "Null";
+            type2 = type2 != "" ? type2 : "Null";
+            textBox_purpose.Text = string.Format("{0}-{1}", type1, type2);
+        }
+
+        private void comboBox_type_1_TextChanged(object sender, EventArgs e)
+        {
+            update_act_type_text();
+        }
+
+        private void comboBox_type_2_TextChanged(object sender, EventArgs e)
+        {
+            update_act_type_text();
+        }
+
+        private void comboBox_type_3_TextChanged(object sender, EventArgs e)
+        {
+            update_act_type_text();
+        }
+
+        private void comboBox_purpose_1_TextChanged(object sender, EventArgs e)
+        {
+            update_purpose_text();
+        }
+
+        private void comboBox_purpose_2_TextChanged(object sender, EventArgs e)
+        {
+            update_purpose_text();
         }
     }
 }

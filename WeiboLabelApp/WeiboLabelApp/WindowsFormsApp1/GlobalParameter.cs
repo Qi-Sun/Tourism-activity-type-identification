@@ -44,5 +44,13 @@ namespace Weibo_Label_App
                 FieldType + "," + FieldDuration +  ")" + " VALUES("  +
                 wid + ",'" + time + "','" + user + "','" + tourism + "','" + actType + "'," + durationTime + ");";
         }
+
+        public string SQL_Insert_LabelResult_1203(string wid, string time, string user, string tourism, string actType,string purpose,
+            string act_1,string act_2,string act_3,string purpose_1,string purpose_2, int durationTime)
+        {
+            return string.Format(@"REPLACE INTO suzhou.suzhou_weibo_labeled_1203 (wid,time,label_user,label_is_tourism,label_act_type,label_purpose,label_act_level_1,
+label_act_level_2,label_act_level_3,label_purpose_level_1,label_purpose_level_2,label_duration_time) VALUES({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}');",
+wid, time, user, tourism, actType, purpose, act_1, act_2, act_3, purpose_1, purpose_2, durationTime);
+        }
     }
 }
