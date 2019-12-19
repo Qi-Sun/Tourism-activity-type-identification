@@ -103,9 +103,13 @@ if __name__ == '__main__':
     # pickle.dump(distance_hashmap, open('./main_point_distance.pkl', 'wb'), 2)
 
     pointSet, weights = read_csv_matrix('./point.csv')
-    dbscan = DBSCAN(eps=600, min_samples=10, n_jobs=10, algorithm='ball_tree', metric=get_distance)
+    dbscan = DBSCAN(eps=600, min_samples=10, n_jobs=10, algorithm='ball_tree', metric=get_distance, leaf_size=20)
     y_pred = dbscan.fit_predict(X=pointSet, sample_weight=weights)
-    y_pred.savetxt('./point_pred_all.txt')
-    pickle.dump(y_pred, open('./point_pred_all_nj10.pkl', 'wb'), 2)
+    # y_pred.savetxt('./point_pred_all.txt')
+    with open('./point_pred_all_nj10.txt', 'w') as wf:
+        for i in range(y_pred.shape[0]):
+            wf.write('%s,%s,%s,%s\n' % (pointSet[i][0], pointSet[i][1], weights[i], y_pred[i]))
+            wf.flush()
+    # pickle.dump(y_pred, open('./point_pred_all_nj10.pkl', 'wb'), 2)
     # y_pred = pickle.load(open('./main_point_pred_all.pkl', 'rb'))
     # print(y_pred.shape)
