@@ -287,7 +287,7 @@ namespace Weibo_Label_App
             label_end_time = DateTime.Now;
             var delta_time = label_end_time - label_show_time;
             label_duration = (int) delta_time.TotalSeconds;
-            label_time = label_end_time.ToString("yyyy/MM/dd HH:hh:ss");
+            label_time = label_end_time.ToString("yyyy/MM/dd HH:mm:ss");
             label_is_tourism = Get_Label_Tourism();
             label_act_type = Get_Label_ActType();
             label_purpose = Get_Label_Purpose();
