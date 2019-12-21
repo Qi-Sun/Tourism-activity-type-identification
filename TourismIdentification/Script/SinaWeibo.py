@@ -36,11 +36,12 @@ class SinaWeibo(object):
     @classmethod
     def construct_from_record(cls, record):
         return cls(id=record['id'], source=record['source'], user_source=record['user_source'],
-                   time=datetime.datetime.strptime(record['time'], "%Y-%m-%d %H:%M:%S"), latitude=record['latitude'],
+                   time=record['time'], latitude=record['latitude'],
                    longitude=record['longitude'], checkin_poiid=record['checkin_poiid'],
                    checkin_title=record['checkin_title'], tourism_by_label=record['tourism_by_label'],
                    userid=record['userid'], tourism_by_poi=record['tourism_by_poi'],
-                   tourism_by_origin=record['tourism_by_origin'], tourism_by_border=record['tourism_by_border'])
+                   tourism_by_origin=record['tourism_by_origin'], tourism_by_border=record['tourism_by_border'],
+                   tourism_by_action=record['tourism_by_action'])
 
     def __str__(self):
         return str.format("id:{id},text:{text},time:{time},user_source:{user_source},checkin_title:{checkin_title}",
@@ -158,7 +159,9 @@ class SinaWeibo(object):
                 nearest_distance = float('inf')
                 nearest_distance = min(
                     [_get_distance_by_latlng(self.field_lat, self.field_lng, x[0], x[1]) for x in pois])
-                distances.append(nearest_distance)
+                nearest_distance += 0.01
+                distances.append(1.0 / nearest_distance)
+                distances.append(1.0 / pow(nearest_distance, 2))
             return np.array(distances)
 
         wide_vector = np.concatenate(
