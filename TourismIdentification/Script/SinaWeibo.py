@@ -5,6 +5,7 @@ import datetime
 import math
 import numpy as np
 import jieba
+from typing import List
 
 
 class SinaWeibo(object):
@@ -32,12 +33,23 @@ class SinaWeibo(object):
         self.tourism_by_border = tourism_by_border
         self.tourism_by_action = tourism_by_action
 
+    @classmethod
+    def construct_from_record(cls, record):
+        return cls(id=record['id'], source=record['source'], user_source=record['user_source'],
+                   time=datetime.datetime.strptime(record['time'], "%Y-%m-%d %H:%M:%S"), latitude=record['latitude'],
+                   longitude=record['longitude'], checkin_poiid=record['checkin_poiid'],
+                   checkin_title=record['checkin_title'], tourism_by_label=record['tourism_by_label'],
+                   userid=record['userid'], tourism_by_poi=record['tourism_by_poi'],
+                   tourism_by_origin=record['tourism_by_origin'], tourism_by_border=record['tourism_by_border'])
+
     def __str__(self):
         return str.format("id:{id},text:{text},time:{time},user_source:{user_source},checkin_title:{checkin_title}",
                           id=self.field_id, text=self.field_text, time=self.field_time,
                           user_source=self.field_user_source, checkin_title=self.field_checkin_title)
 
     def get_time_feature(self):
+        wide_vector = None
+        deep_vector = None
         WholeDaySenconds = 24 * 60 * 60
         PI = math.pi
 
@@ -85,16 +97,27 @@ class SinaWeibo(object):
             one_hot_vector[0][one_date.weekday()] = 1
             return one_hot_vector
 
-        wide_vector = None
-        deep_vector = None
         deep_vector = np.concatenate((_get_weekday_feature(self.field_time), _get_daytime_feature(self.field_time),
                                       _get_date_feature(self.field_time)), axis=0).reshape(-1)
         wide_vector = np.array(_get_weekday_feature_one_hot(self.field_time)).reshape(-1)
         return wide_vector, deep_vector
 
-    def get_spatial_feature(self, city_distance_dict: dict):
+    def get_spatial_feature(self, city_distance_dict: dict, pois_attraction: List, pois_eat: List,
+                            pois_accommodation: List, pois_transportation: List, pois_buy: List,
+                            pois_entertainment: List):
         wide_vector = None
         deep_vector = None
+
+        def _get_distance_by_latlng(lat1, lng1, lat2, lng2):
+            rad_lat1 = math.radians(lat1)
+            rad_lat2 = math.radians(lat2)
+            delta_lat = rad_lat1 - rad_lat2
+            delta_lng = math.radians(lng1) - math.radians(lng2)
+            theta = 2 * math.asin(
+                math.sqrt(pow(math.sin(delta_lat / 2), 2) + math.cos(rad_lat1) * math.cos(rad_lat2) * pow(
+                    math.sin(delta_lng / 2), 2)))
+            earth_radius = 6378.137
+            return theta * earth_radius
 
         def _get_user_source_feature_one_hot():
             one_hot_vector = np.zeros(3)
@@ -126,6 +149,22 @@ class SinaWeibo(object):
             return np.array(
                 [distance, distance_pow2, distance_pow3, 1.0 / distance, 1.0 / distance_pow2, 1.0 / distance_pow3])
 
+        def _get_distance_nearest_poi():
+            distances = []
+            for pois in [pois_attraction, pois_eat, pois_accommodation, pois_transportation, pois_buy,
+                         pois_entertainment]:
+                if pois is None:
+                    continue
+                nearest_distance = float('inf')
+                nearest_distance = min(
+                    [_get_distance_by_latlng(self.field_lat, self.field_lng, x[0], x[1]) for x in pois])
+                distances.append(nearest_distance)
+            return np.array(distances)
+
+        wide_vector = np.concatenate(
+            (_get_user_source_feature_one_hot(), _get_checkin_poi_one_hot(), _get_checkin_type_one_hot()),
+            axis=0).reshape(-1)
+        deep_vector = np.concatenate((_get_user_source_feature(), _get_distance_nearest_poi()), axis=0).reshape(-1)
         return wide_vector, deep_vector
 
     def get_text_feature(self):
@@ -157,6 +196,9 @@ class SinaWeibo(object):
                     while index < length and text[index] != ']':
                         index += 1
             return ''.join(stack)
+
+        def _clean_text_url(text):
+            return text.split('http')[0]
 
         def _get_words(text):
             cut_text = [x for x in jieba.cut(text)]
