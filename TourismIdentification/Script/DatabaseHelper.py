@@ -15,6 +15,17 @@ def get_one_weibo():
     db_cursor.execute(select_sql)
     return db_cursor.fetchall()[0]
 
+def get_weibos(table_name):
+    select_sql = "SELECT * FROM suzhou_sq.%s;" % table_name
+    db_cursor = get_db_cursor()
+    db_cursor.execute(select_sql)
+    res = []
+    for record in db_cursor.fetchall():
+        res.append(record)
+    return res
+
+    
+
 if __name__ == '__main__':
     record = get_one_weibo()
     print(record)
