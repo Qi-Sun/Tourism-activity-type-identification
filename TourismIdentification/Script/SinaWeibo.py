@@ -5,7 +5,8 @@ import datetime
 import math
 import numpy as np
 import jieba
-from typing import List
+from typing import List, Dict
+import torch
 
 
 class SinaWeibo(object):
@@ -17,7 +18,7 @@ class SinaWeibo(object):
         self.field_id = id
         self.field_text = text
         self.field_source = source
-        self.field_user_source = user_source
+        self.field_user_source = user_source if user_source is not None else '不是苏州市'
         self.field_userid = userid
         self.field_time = time
         self.field_lat = latitude
@@ -36,7 +37,7 @@ class SinaWeibo(object):
     @classmethod
     def construct_from_record(cls, record):
         return cls(id=record['id'], source=record['source'], user_source=record['user_source'],
-                   time=record['time'], latitude=record['latitude'],
+                   time=record['time'], latitude=record['latitude'], text=record['text'],
                    longitude=record['longitude'], checkin_poiid=record['checkin_poiid'],
                    checkin_title=record['checkin_title'], tourism_by_label=record['tourism_by_label'],
                    userid=record['userid'], tourism_by_poi=record['tourism_by_poi'],
@@ -94,13 +95,55 @@ class SinaWeibo(object):
             return np.array([math.cos(alpha), math.sin(alpha)])
 
         def _get_weekday_feature_one_hot(one_date: datetime):
-            one_hot_vector = np.zeros((1, 7))
-            one_hot_vector[0][one_date.weekday()] = 1
+            one_hot_vector = np.zeros(7)
+            one_hot_vector[one_date.weekday()] = 1
             return one_hot_vector
 
+        def _get_hour_feature(one_day_time: datetime):
+            one_hot_vector = np.zeros(8)
+            index = ((one_day_time.hour + 24 - 7) % 24) // 3
+            one_hot_vector[index] = 1
+            return one_hot_vector
+
+        def _get_holiday(one_day_time: datetime):
+            holidays = [(datetime.datetime(2013, 1, 1), datetime.datetime(2013, 1, 3)),
+                        (datetime.datetime(2013, 2, 9), datetime.datetime(2013, 2, 15)),
+                        (datetime.datetime(2013, 4, 4), datetime.datetime(2013, 4, 6)),
+                        (datetime.datetime(2013, 4, 29), datetime.datetime(2013, 5, 1)),
+                        (datetime.datetime(2013, 6, 10), datetime.datetime(2013, 6, 12)),
+                        (datetime.datetime(2013, 9, 19), datetime.datetime(2013, 9, 21)),
+                        (datetime.datetime(2013, 10, 1), datetime.datetime(2013, 10, 7)),
+                        (datetime.datetime(2012, 1, 1), datetime.datetime(2012, 1, 3)),
+                        (datetime.datetime(2012, 1, 22), datetime.datetime(2012, 1, 28)),
+                        (datetime.datetime(2012, 4, 2), datetime.datetime(2012, 4, 4)),
+                        (datetime.datetime(2012, 4, 29), datetime.datetime(2012, 5, 1)),
+                        (datetime.datetime(2012, 6, 22), datetime.datetime(2012, 6, 24)),
+                        (datetime.datetime(2012, 9, 30), datetime.datetime(2012, 10, 7)),
+                        (datetime.datetime(2011, 1, 1), datetime.datetime(2011, 1, 3)),
+                        (datetime.datetime(2011, 2, 2), datetime.datetime(2011, 2, 8)),
+                        (datetime.datetime(2011, 4, 3), datetime.datetime(2011, 4, 5)),
+                        (datetime.datetime(2011, 4, 30), datetime.datetime(2011, 5, 2)),
+                        (datetime.datetime(2011, 6, 4), datetime.datetime(2011, 6, 6)),
+                        (datetime.datetime(2011, 9, 10), datetime.datetime(2011, 9, 12)),
+                        (datetime.datetime(2011, 10, 1), datetime.datetime(2011, 10, 7))
+                        ]
+
+            def get_day_to_holiday(one_day: datetime, start_time: datetime, end_time: datetime):
+                delta1 = (one_day - start_time).days
+                delta2 = (one_day - end_time).days
+                if delta1 * delta2 <= 0:
+                    return 0
+                else:
+                    return min(abs(delta1), abs(delta2))
+
+            days_to_holiday = [get_day_to_holiday(one_day_time, start, end) for start, end in holidays]
+            return np.array([min(days_to_holiday)])
+
         deep_vector = np.concatenate((_get_weekday_feature(self.field_time), _get_daytime_feature(self.field_time),
-                                      _get_date_feature(self.field_time)), axis=0).reshape(-1)
-        wide_vector = np.array(_get_weekday_feature_one_hot(self.field_time)).reshape(-1)
+                                      _get_date_feature(self.field_time), _get_holiday(self.field_time)),
+                                     axis=0).reshape(-1)
+        wide_vector = np.concatenate(
+            (_get_weekday_feature_one_hot(self.field_time), _get_hour_feature(self.field_time)), axis=0).reshape(-1)
         return wide_vector, deep_vector
 
     def get_spatial_feature(self, city_distance_dict: dict, pois_attraction: List, pois_eat: List,
@@ -170,8 +213,7 @@ class SinaWeibo(object):
         deep_vector = np.concatenate((_get_user_source_feature(), _get_distance_nearest_poi()), axis=0).reshape(-1)
         return wide_vector, deep_vector
 
-    def get_text_feature(self):
-        wide_vector = None
+    def get_text_feature(self, word2index, embed_matrix):
         deep_vector = None
 
         def _clean_text_AT(text):
@@ -183,6 +225,7 @@ class SinaWeibo(object):
                     stack.append(text[index])
                     index += 1
                 else:
+                    index += 1
                     while index < length and text[index] not in ['@', ' ']:
                         index += 1
             return ''.join(stack)
@@ -207,7 +250,30 @@ class SinaWeibo(object):
             cut_text = [x for x in jieba.cut(text)]
             return cut_text
 
-        return wide_vector, deep_vector
+        text = self.field_text
+        text = _clean_text_AT(text)
+        text = _clean_text_emotion(text)
+        text = _clean_text_url(text)
+        words = _get_words(text)
+        deep_vector = np.array([word2index[x] if x in word2index else 0 for x in words] + [0])
+        deep_matrix = [embed_matrix[index] for index in deep_vector]
+        deep_matrix = np.array(deep_matrix)
+        return deep_vector, deep_matrix
+
+    def get_all_feature(self, city_distance_dict: dict, pois_attraction: List, pois_eat: List,
+                        pois_accommodation: List, pois_transportation: List, pois_buy: List,
+                        pois_entertainment: List, word2index: Dict, embed_matrix: List):
+        spatial_wide_vector, spatial_deep_vector = self.get_spatial_feature(city_distance_dict, pois_attraction,
+                                                                            pois_eat,
+                                                                            pois_accommodation, pois_transportation,
+                                                                            pois_buy, pois_entertainment)
+        time_wide_vector, time_deep_vector = self.get_time_feature()
+        text_vector, text_matrix = self.get_text_feature(word2index, embed_matrix)
+        return {'wide': torch.Tensor([np.concatenate((spatial_wide_vector, time_wide_vector), axis=0).reshape(-1)]),
+                'deep_dense': torch.Tensor(
+                    [np.concatenate((spatial_deep_vector, time_deep_vector), axis=0).reshape(-1)]),
+                'deep_text': torch.Tensor([text_vector]),
+                'deep_text_matrix': torch.Tensor(text_matrix)}
 
 
 if __name__ == "__main__":
