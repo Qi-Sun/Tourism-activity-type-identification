@@ -84,8 +84,8 @@ def test_main_no_text():
 
 def test_main_batch():
     # train and test data
-    train_x, train_y = pickle.load(open('../WeiboData/train.plk', 'rb'))
-    test_x, test_y = pickle.load(open('../WeiboData/test.plk', 'rb'))
+    train_x, train_y = pickle.load(open('../WeiboData/train_1227.plk', 'rb'))
+    test_x, test_y = pickle.load(open('../WeiboData/test_1227.plk', 'rb'))
     word_embedding_matrix = np.load('../Data/word_embedding_matrix.npy')
 
     # test data
@@ -95,12 +95,12 @@ def test_main_batch():
 
     # Model
     # Model
-    wide_model = WideModel(wide_dim=19, output_dim=2)
-    deep_dense_model = DeepDenseModel(input_dim=24, hidden_layers=[16, 8, 4], batchNorm=False, dropout=[0, 0, 0])
+    wide_model = WideModel(wide_dim=27, output_dim=2)
+    deep_dense_model = DeepDenseModel(input_dim=25, hidden_layers=[16, 8, 4], batchNorm=True, dropout=[0, 0, 0])
 
     deep_text_model = DeepTextModel_batch(n_layers=2, hidden_dim=128, embed_dim=200, vocab_size=8824330, rnn_dropout=0,
                                           padding_idx=0, bidirectional=False, embedding_matrix=word_embedding_matrix,
-                                          head_layers=[128, 32, 16], head_dropout=[0, 0, 0], head_batchnorm=False)
+                                          head_layers=[128, 32, 16], head_dropout=[0, 0, 0], head_batchnorm=True)
 
     wide_deep_model = WideDeepModel_batch(wide_model=wide_model, deep_dense_model=deep_dense_model, output_dim=2,
                                           deep_text_model=deep_text_model, deep_head_layers=None,
@@ -114,7 +114,7 @@ def test_main_batch():
     batch_size = 64
     test_sample_cnt = len(test_x)
 
-    wide_deep_model.load_state_dict(torch.load('../Model/deep_text_batch/epoch_48.pth'))
+    wide_deep_model.load_state_dict(torch.load('../Model/1229_wide_deep_text/epoch_49.pth'))
     with torch.no_grad():
         # wf = open('../Result/test_1225.txt','w')
         y_pred_list = []
@@ -219,4 +219,4 @@ def test_main_batch_no_wide():
 
 
 if __name__ == '__main__':
-    test_main_batch_no_wide()
+    test_main_batch()

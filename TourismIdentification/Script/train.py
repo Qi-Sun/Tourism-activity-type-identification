@@ -171,7 +171,7 @@ def train_main_batch():
                                           head_layers_dropout=[0, 0, 0], head_layers_batchnorm=False)
 
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(wide_deep_model.parameters(), weight_decay=0.025)
+    optimizer = torch.optim.Adam(wide_deep_model.parameters(), weight_decay=0.025,lr=0.005)
 
     # batch size
     batch_size = 64
@@ -181,7 +181,7 @@ def train_main_batch():
     model_hashmap = {}
 
     # Training loop
-    for epoch in range(100):
+    for epoch in range(50):
         for i in range(0, train_sample_cnt, batch_size):
             end_index = min(i + batch_size, train_sample_cnt)
             cur_batch_deep_text = train_x_deep_text[i:end_index]
@@ -227,7 +227,7 @@ def train_main_batch():
 
             if not min_loss_dev or total_loss < min_loss_dev[0]:
                 min_loss_dev.append(total_loss)
-                model_hashmap[total_loss] = '../Model/1227_wide_deep_text/epoch_%s.pth' % (epoch)
+                model_hashmap[total_loss] = '../Model/1229_wide_deep_text/epoch_%s.pth' % (epoch)
                 torch.save(wide_deep_model.state_dict(), model_hashmap[total_loss])
                 min_loss_dev.sort()
                 if len(min_loss_dev) > 5:
