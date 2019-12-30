@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.groupBoxMap = new System.Windows.Forms.GroupBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.gMap = new GMap.NET.WindowsForms.GMapControl();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.groupBoxInfo = new System.Windows.Forms.GroupBox();
@@ -61,14 +60,22 @@
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox_purpose_2 = new System.Windows.Forms.ComboBox();
             this.comboBox_purpose_1 = new System.Windows.Forms.ComboBox();
+            this.groupBox_Place = new System.Windows.Forms.GroupBox();
+            this.textBox_Place = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.comboBox_placetype = new System.Windows.Forms.ComboBox();
+            this.comboBox_placename = new System.Windows.Forms.ComboBox();
+            this.button_load_acttype_file = new System.Windows.Forms.Button();
+            this.button_save_acttype_file = new System.Windows.Forms.Button();
             this.groupBoxMap.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBoxInfo.SuspendLayout();
             this.groupBoxLabel.SuspendLayout();
             this.groupBox_weibo.SuspendLayout();
             this.groupBox_act.SuspendLayout();
             this.groupBox_Toursim.SuspendLayout();
             this.groupBox_purpose.SuspendLayout();
+            this.groupBox_Place.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxMap
@@ -76,30 +83,18 @@
             this.groupBoxMap.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBoxMap.Controls.Add(this.dataGridView1);
+            this.groupBoxMap.Controls.Add(this.groupBox_weibo);
             this.groupBoxMap.Controls.Add(this.gMap);
             this.groupBoxMap.Location = new System.Drawing.Point(12, 12);
             this.groupBoxMap.Name = "groupBoxMap";
-            this.groupBoxMap.Size = new System.Drawing.Size(812, 730);
+            this.groupBoxMap.Size = new System.Drawing.Size(812, 665);
             this.groupBoxMap.TabIndex = 0;
             this.groupBoxMap.TabStop = false;
             this.groupBoxMap.Text = "Map";
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 596);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(800, 128);
-            this.dataGridView1.TabIndex = 1;
-            // 
             // gMap
             // 
-            this.gMap.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.gMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gMap.Bearing = 0F;
             this.gMap.CanDragMap = true;
@@ -120,13 +115,13 @@
             this.gMap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gMap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gMap.ShowTileGridLines = false;
-            this.gMap.Size = new System.Drawing.Size(800, 570);
+            this.gMap.Size = new System.Drawing.Size(800, 483);
             this.gMap.TabIndex = 0;
             this.gMap.Zoom = 0D;
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 745);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 680);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1101, 22);
             this.statusStrip1.TabIndex = 1;
@@ -189,15 +184,16 @@
             // 
             this.groupBoxLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBoxLabel.Controls.Add(this.groupBox_weibo);
+            this.groupBoxLabel.Controls.Add(this.groupBox_Place);
+            this.groupBoxLabel.Controls.Add(this.button_showpic);
+            this.groupBoxLabel.Controls.Add(this.groupBox_purpose);
             this.groupBoxLabel.Controls.Add(this.groupBox_act);
             this.groupBoxLabel.Controls.Add(this.groupBox_Toursim);
             this.groupBoxLabel.Controls.Add(this.button_labelit);
             this.groupBoxLabel.Controls.Add(this.button_RandomOne);
-            this.groupBoxLabel.Controls.Add(this.groupBox_purpose);
             this.groupBoxLabel.Location = new System.Drawing.Point(830, 102);
             this.groupBoxLabel.Name = "groupBoxLabel";
-            this.groupBoxLabel.Size = new System.Drawing.Size(259, 640);
+            this.groupBoxLabel.Size = new System.Drawing.Size(259, 575);
             this.groupBoxLabel.TabIndex = 3;
             this.groupBoxLabel.TabStop = false;
             this.groupBoxLabel.Text = "Label";
@@ -207,11 +203,10 @@
             this.groupBox_weibo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox_weibo.Controls.Add(this.button_showpic);
             this.groupBox_weibo.Controls.Add(this.richTextBox_weibo);
-            this.groupBox_weibo.Location = new System.Drawing.Point(6, 367);
+            this.groupBox_weibo.Location = new System.Drawing.Point(6, 508);
             this.groupBox_weibo.Name = "groupBox_weibo";
-            this.groupBox_weibo.Size = new System.Drawing.Size(247, 267);
+            this.groupBox_weibo.Size = new System.Drawing.Size(800, 151);
             this.groupBox_weibo.TabIndex = 4;
             this.groupBox_weibo.TabStop = false;
             this.groupBox_weibo.Text = "Weibo";
@@ -221,9 +216,9 @@
             this.button_showpic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button_showpic.Enabled = false;
-            this.button_showpic.Location = new System.Drawing.Point(6, 238);
+            this.button_showpic.Location = new System.Drawing.Point(6, 546);
             this.button_showpic.Name = "button_showpic";
-            this.button_showpic.Size = new System.Drawing.Size(235, 23);
+            this.button_showpic.Size = new System.Drawing.Size(247, 23);
             this.button_showpic.TabIndex = 1;
             this.button_showpic.Text = "Show Picture";
             this.button_showpic.UseVisualStyleBackColor = true;
@@ -236,7 +231,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBox_weibo.Location = new System.Drawing.Point(6, 20);
             this.richTextBox_weibo.Name = "richTextBox_weibo";
-            this.richTextBox_weibo.Size = new System.Drawing.Size(235, 212);
+            this.richTextBox_weibo.Size = new System.Drawing.Size(788, 125);
             this.richTextBox_weibo.TabIndex = 0;
             this.richTextBox_weibo.Text = "";
             // 
@@ -244,6 +239,8 @@
             // 
             this.groupBox_act.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox_act.Controls.Add(this.button_save_acttype_file);
+            this.groupBox_act.Controls.Add(this.button_load_acttype_file);
             this.groupBox_act.Controls.Add(this.textbox_type);
             this.groupBox_act.Controls.Add(this.label_type_3);
             this.groupBox_act.Controls.Add(this.label_type_2);
@@ -253,7 +250,7 @@
             this.groupBox_act.Controls.Add(this.comboBox_type_1);
             this.groupBox_act.Location = new System.Drawing.Point(6, 126);
             this.groupBox_act.Name = "groupBox_act";
-            this.groupBox_act.Size = new System.Drawing.Size(247, 129);
+            this.groupBox_act.Size = new System.Drawing.Size(247, 173);
             this.groupBox_act.TabIndex = 3;
             this.groupBox_act.TabStop = false;
             this.groupBox_act.Text = "ActivatyType";
@@ -397,12 +394,14 @@
             // 
             // groupBox_purpose
             // 
+            this.groupBox_purpose.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox_purpose.Controls.Add(this.textBox_purpose);
             this.groupBox_purpose.Controls.Add(this.label2);
             this.groupBox_purpose.Controls.Add(this.label3);
             this.groupBox_purpose.Controls.Add(this.comboBox_purpose_2);
             this.groupBox_purpose.Controls.Add(this.comboBox_purpose_1);
-            this.groupBox_purpose.Location = new System.Drawing.Point(6, 261);
+            this.groupBox_purpose.Location = new System.Drawing.Point(6, 437);
             this.groupBox_purpose.Name = "groupBox_purpose";
             this.groupBox_purpose.Size = new System.Drawing.Size(247, 100);
             this.groupBox_purpose.TabIndex = 5;
@@ -455,11 +454,92 @@
             this.comboBox_purpose_1.SelectedIndexChanged += new System.EventHandler(this.comboBox_purpose_1_SelectedIndexChanged);
             this.comboBox_purpose_1.TextChanged += new System.EventHandler(this.comboBox_purpose_1_TextChanged);
             // 
+            // groupBox_Place
+            // 
+            this.groupBox_Place.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox_Place.Controls.Add(this.textBox_Place);
+            this.groupBox_Place.Controls.Add(this.label8);
+            this.groupBox_Place.Controls.Add(this.label9);
+            this.groupBox_Place.Controls.Add(this.comboBox_placetype);
+            this.groupBox_Place.Controls.Add(this.comboBox_placename);
+            this.groupBox_Place.Location = new System.Drawing.Point(6, 305);
+            this.groupBox_Place.Name = "groupBox_Place";
+            this.groupBox_Place.Size = new System.Drawing.Size(247, 126);
+            this.groupBox_Place.TabIndex = 6;
+            this.groupBox_Place.TabStop = false;
+            this.groupBox_Place.Text = "Place";
+            // 
+            // textBox_Place
+            // 
+            this.textBox_Place.Location = new System.Drawing.Point(25, 86);
+            this.textBox_Place.Name = "textBox_Place";
+            this.textBox_Place.ReadOnly = true;
+            this.textBox_Place.Size = new System.Drawing.Size(198, 21);
+            this.textBox_Place.TabIndex = 14;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(23, 56);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 12);
+            this.label8.TabIndex = 13;
+            this.label8.Text = "场所类型";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(23, 30);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(53, 12);
+            this.label9.TabIndex = 12;
+            this.label9.Text = "场所名称";
+            // 
+            // comboBox_placetype
+            // 
+            this.comboBox_placetype.FormattingEnabled = true;
+            this.comboBox_placetype.Location = new System.Drawing.Point(102, 53);
+            this.comboBox_placetype.Name = "comboBox_placetype";
+            this.comboBox_placetype.Size = new System.Drawing.Size(121, 20);
+            this.comboBox_placetype.TabIndex = 11;
+            this.comboBox_placetype.TextChanged += new System.EventHandler(this.comboBox_placetype_TextChanged);
+            // 
+            // comboBox_placename
+            // 
+            this.comboBox_placename.FormattingEnabled = true;
+            this.comboBox_placename.Location = new System.Drawing.Point(102, 27);
+            this.comboBox_placename.Name = "comboBox_placename";
+            this.comboBox_placename.Size = new System.Drawing.Size(121, 20);
+            this.comboBox_placename.TabIndex = 10;
+            this.comboBox_placename.SelectedIndexChanged += new System.EventHandler(this.comboBox_placename_SelectedIndexChanged);
+            this.comboBox_placename.TextChanged += new System.EventHandler(this.comboBox_placename_TextChanged);
+            // 
+            // button_load_acttype_file
+            // 
+            this.button_load_acttype_file.Location = new System.Drawing.Point(25, 130);
+            this.button_load_acttype_file.Name = "button_load_acttype_file";
+            this.button_load_acttype_file.Size = new System.Drawing.Size(75, 31);
+            this.button_load_acttype_file.TabIndex = 7;
+            this.button_load_acttype_file.Text = "加载文件";
+            this.button_load_acttype_file.UseVisualStyleBackColor = true;
+            this.button_load_acttype_file.Click += new System.EventHandler(this.button_load_acttype_file_Click);
+            // 
+            // button_save_acttype_file
+            // 
+            this.button_save_acttype_file.Location = new System.Drawing.Point(148, 130);
+            this.button_save_acttype_file.Name = "button_save_acttype_file";
+            this.button_save_acttype_file.Size = new System.Drawing.Size(75, 31);
+            this.button_save_acttype_file.TabIndex = 8;
+            this.button_save_acttype_file.Text = "保存文件";
+            this.button_save_acttype_file.UseVisualStyleBackColor = true;
+            this.button_save_acttype_file.Click += new System.EventHandler(this.button_save_acttype_file_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1101, 767);
+            this.ClientSize = new System.Drawing.Size(1101, 702);
             this.Controls.Add(this.groupBoxLabel);
             this.Controls.Add(this.groupBoxInfo);
             this.Controls.Add(this.statusStrip1);
@@ -469,7 +549,6 @@
             this.Text = "MainForm";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.groupBoxMap.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBoxInfo.ResumeLayout(false);
             this.groupBoxInfo.PerformLayout();
             this.groupBoxLabel.ResumeLayout(false);
@@ -480,6 +559,8 @@
             this.groupBox_Toursim.PerformLayout();
             this.groupBox_purpose.ResumeLayout(false);
             this.groupBox_purpose.PerformLayout();
+            this.groupBox_Place.ResumeLayout(false);
+            this.groupBox_Place.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -506,7 +587,6 @@
         private GMap.NET.WindowsForms.GMapControl gMap;
         private System.Windows.Forms.CheckBox checkBox_only_this;
         private System.Windows.Forms.CheckBox checkBox_only_waidi;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TextBox textbox_type;
         private System.Windows.Forms.Label label_type_3;
         private System.Windows.Forms.Label label_type_2;
@@ -520,6 +600,14 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboBox_purpose_2;
         private System.Windows.Forms.ComboBox comboBox_purpose_1;
+        private System.Windows.Forms.GroupBox groupBox_Place;
+        private System.Windows.Forms.TextBox textBox_Place;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox comboBox_placetype;
+        private System.Windows.Forms.ComboBox comboBox_placename;
+        private System.Windows.Forms.Button button_save_acttype_file;
+        private System.Windows.Forms.Button button_load_acttype_file;
     }
 }
 

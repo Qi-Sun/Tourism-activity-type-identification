@@ -11,6 +11,9 @@ using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET;
 using GMap.NET.WindowsForms.Markers;
+using Newtonsoft.Json;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace Weibo_Label_App
 {
@@ -44,6 +47,7 @@ namespace Weibo_Label_App
         //Classification system 
         public Dictionary<string, Dictionary<string, List<string>>> classification_act = new Dictionary<string, Dictionary<string, List<string>>>();
         public Dictionary<string, List<string>> classification_purpose = new Dictionary<string, List<string>>();
+        
 
         public void Initialize_Classification_Act()
         {
@@ -243,6 +247,7 @@ namespace Weibo_Label_App
                 button_showpic.Enabled = true;
             // Show Text in RichTextBox
             richTextBox_weibo.AppendText(Weibo_Info_ToString_Brief(one_weibo));
+            Show_place_name_and_type(one_weibo);
             // ComboBox
             Refresh_ComboBox_Act_1();
             Refresh_ComboBox_Purpose_1();
@@ -265,6 +270,17 @@ namespace Weibo_Label_App
                 str_weibo += "Place:" + weibo_info["poi_title"].ToString() + "\n";
             }
             return str_weibo;
+        }
+
+        public void Show_place_name_and_type(Dictionary<string, object> weibo_info)
+        {
+            comboBox_placename.Text = "";
+            comboBox_placetype.Text = "";
+            if (weibo_info["poiid"].ToString().Length > 1)
+            {
+                comboBox_placename.Text = weibo_info["poi_title"].ToString();
+                comboBox_placetype.Text = weibo_info["poi_type"].ToString();
+            }
         }
 
         public string Weibo_Info_ToString_Brief(Dictionary<string, object> weibo_info)
@@ -291,13 +307,15 @@ namespace Weibo_Label_App
             label_is_tourism = Get_Label_Tourism();
             label_act_type = Get_Label_ActType();
             label_purpose = Get_Label_Purpose();
+            string label_place_name = Get_label_Placename();
+            string label_place_type = Get_label_Placetype();
 
             // Write to Database
-            var sql_insert = gPara.SQL_Insert_LabelResult_1203(label_wid, label_time,
+            var sql_insert = gPara.SQL_Insert_LabelResult_1230(label_wid, label_time,
                 label_user, label_is_tourism, label_act_type, label_purpose,
                 comboBox_type_1.Text, comboBox_type_2.Text, comboBox_type_3.Text,
                 comboBox_purpose_1.Text, comboBox_purpose_2.Text,
-                label_duration);
+                label_duration, label_place_name, label_place_type);
             Database.Execute_NonQuery(sql_connection_str, sql_insert);
             // UI
             button_labelit.Enabled = false;
@@ -340,6 +358,7 @@ namespace Weibo_Label_App
             weibo_info["poiid"] = random_record["checkin_poiid"] != null ? random_record["checkin_poiid"].ToString() : "";
             weibo_info["poi_title"] = random_record["checkin_title"] != null ? random_record["checkin_title"].ToString() : "";
             weibo_info["pic_url"] = random_record["original_pic"] != null ? random_record["original_pic"].ToString() : "";
+            weibo_info["poi_type"] = random_record["checkin_poi_type"] != null ? random_record["checkin_poi_type"].ToString() : "";
             return weibo_info;
         }
 
@@ -433,6 +452,16 @@ namespace Weibo_Label_App
             return textBox_purpose.Text;
         }
 
+        public string Get_label_Placename()
+        {
+            return comboBox_placename.Text;
+        }
+
+        public string Get_label_Placetype()
+        {
+            return comboBox_placetype.Text;
+        }
+
         private void button_showpic_Click(object sender, EventArgs e)
         {
             ShowPictureForm form_show_picture = new ShowPictureForm(label_weibo["pic_url"].ToString());
@@ -518,6 +547,87 @@ namespace Weibo_Label_App
         private void comboBox_purpose_2_TextChanged(object sender, EventArgs e)
         {
             update_purpose_text();
+        }
+
+        private void button_load_acttype_file_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openDialog = new OpenFileDialog();
+            if(openDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filename = openDialog.FileName;
+                try
+                {
+                    StreamReader reader = new StreamReader(filename);
+                    JsonReader jsonReader = new JsonTextReader(reader);
+                    JObject jsonObject = (JObject)JToken.ReadFrom(jsonReader);
+                    Dictionary<string, Dictionary<string, List<string>>> new_classification_act = new Dictionary<string, Dictionary<string, List<string>>>();
+                    foreach (var level_1_act_type in jsonObject)
+                    {
+                        new_classification_act[level_1_act_type.Key] = new Dictionary<string, List<string>>();
+                        var level_1_act_type_value = level_1_act_type.Value;
+                        JObject json_level_2 = (JObject)level_1_act_type_value;
+                        foreach (var level_2_act_type in json_level_2)
+                        {
+                            new_classification_act[level_1_act_type.Key][level_2_act_type.Key] = new List<string>();
+                            JArray json_level_3 = (JArray)level_2_act_type.Value;
+                            foreach (var json_level_3_act_type in json_level_3)
+                            {
+                                new_classification_act[level_1_act_type.Key][level_2_act_type.Key].Add(json_level_3_act_type.ToString());
+                            }
+                        }
+                    }
+                    classification_act = new_classification_act;
+                    MessageBox.Show("Finished!");
+                }
+                catch
+                {
+                    MessageBox.Show("Failed!");
+                }
+            }
+        }
+
+        private void button_save_acttype_file_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "JSON文件(*.json)|*.json";
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filename = saveDialog.FileName;
+                try
+                {
+                    string output = Newtonsoft.Json.JsonConvert.SerializeObject(classification_act, Newtonsoft.Json.Formatting.Indented);
+                    File.WriteAllText(filename, output);
+                    MessageBox.Show("Finished!");
+                }
+                catch
+                {
+                    MessageBox.Show("Failed!");
+                }
+            }
+        }
+
+        private void comboBox_placetype_TextChanged(object sender, EventArgs e)
+        {
+            update_textBox_Place_text();
+        }
+
+        private void comboBox_placename_TextChanged(object sender, EventArgs e)
+        {
+            update_textBox_Place_text();
+        }
+
+        public void update_textBox_Place_text()
+        {
+            string type1 = comboBox_placename.Text;
+            string type2 = comboBox_placetype.Text;
+            type1 = type1 != "" ? type1 : "Null";
+            type2 = type2 != "" ? type2 : "Null";
+            textBox_Place.Text = string.Format("{0}-{1}", type1, type2);
+        }
+
+        private void comboBox_placename_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
