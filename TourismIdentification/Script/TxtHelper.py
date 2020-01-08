@@ -81,8 +81,8 @@ def read_embed_txt_4(filename):
 
 
 if __name__ == '__main__':
-    # word2index, index2word = read_embed_txt_2('/home/sunqi/Weibo2Vec/word2vec/Tencent_AILab_ChineseEmbedding.txt')
-    # pickle.dump((word2index, index2word), open('../Data/Tencent_ChineseEmbedding_Dict.plk', 'wb'), 2)
-    word_embedding_matrix = read_embed_txt_4('/home/sunqi/Weibo2Vec/word2vec/Tencent_AILab_ChineseEmbedding.txt')
+    word2index, index2word = read_embed_txt_2('/home/sunqi/Weibo2Vec/word2vec/Tencent_AILab_ChineseEmbedding.txt')
+    pickle.dump((word2index, index2word), open('../Data/Tencent_ChineseEmbedding_Dict.plk', 'wb'), 2)
+    # word_embedding_matrix = read_embed_txt_4('/home/sunqi/Weibo2Vec/word2vec/Tencent_AILab_ChineseEmbedding.txt')
     # word_embedding_matrix.dump('../Data/word_embedding_matrix.mat')
-    np.save('../Data/word_embedding_matrix.npy', word_embedding_matrix)
+    # np.save('../Data/word_embedding_matrix.npy', word_embedding_matrix)
